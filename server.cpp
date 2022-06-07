@@ -16,7 +16,7 @@
 #include <fstream>
 using namespace std;
 
-// Server side
+// server side
 int main(int argc, char *argv[]){
     // for the server, we only need to specify a port number
     if(argc != 2) {
@@ -85,11 +85,14 @@ int main(int argc, char *argv[]){
         memset(&msg, 0, sizeof(msg));
         bytesRead += recv(newSd, (char*)&msg, sizeof(msg), 0);
 
+        // checks for the exit statement
         if(!strcmp(msg, "exit")) {
             cout << "Client has quit the session" << endl;
             break;
         }
         cout << "Client: " << msg << endl;
+        
+        // server message to the client
         cout << ">";
         string data;
         getline(cin, data);
@@ -97,6 +100,7 @@ int main(int argc, char *argv[]){
         // clear the buffer
         memset(&msg, 0, sizeof(msg));
         strcpy(msg, data.c_str());
+
         if(data == "exit") {
             // send to the client that server has closed the connection
             send(newSd, (char*)&msg, strlen(msg), 0);
@@ -111,9 +115,9 @@ int main(int argc, char *argv[]){
     gettimeofday(&end1, NULL);
     close(newSd);
     close(serverSd);
-    cout << "********Session********" << endl;
-    cout << "Bytes written: " << bytesWritten << " Bytes read: " << bytesRead << endl;
+    cout << endl << "========Session========" << endl;
+    cout << "Bytes written: " << bytesWritten << endl << " Bytes read: " << bytesRead << endl;
     cout << "Elapsed time: " << (end1.tv_sec - start1.tv_sec) << " secs" << endl;
-    cout << "Connection closed..." << endl;
+    cout << "Connection closed" << endl;
     return 0;
 }
