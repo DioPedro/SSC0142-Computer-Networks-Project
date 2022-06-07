@@ -54,8 +54,6 @@ int main(int argc, char *argv[]){
         cout << ">";
         string data;
         getline(cin, data);
-        int data_size = data.size();
-        cout << data_size << endl;
         //clear the buffer
         memset(&msg, 0, sizeof(msg));
         strcpy(msg, data.c_str());
@@ -63,10 +61,6 @@ int main(int argc, char *argv[]){
         if(data == "exit") {
             send(clientSd, (char*)&msg, strlen(msg), 0);
             break;
-        }
-
-        if(data_size > 4096) {
-            cout << "Maior que 4096 rei" << endl;
         }
 
         bytesWritten += send(clientSd, (char*)&msg, strlen(msg), 0);
