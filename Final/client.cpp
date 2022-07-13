@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include "client.hpp"
-#include "sock.hpp"
+#include "socket.hpp"
 
 using namespace std;
 
@@ -138,28 +138,28 @@ int main() {
     if ((sock = socket(AF_INET, SOCK_STREAM, PROTOCOL)) < 0)
         errorMessage("\nSocket creation error\n");
 
-    bzero((char *)serverAddr, serverAddrLen);
-    bzero((char *)clientAddr, clientAddrLen);
+    bzero((char *)&serverAddr, serverAddrLen);
+    bzero((char *)&clientAddr, clientAddrLen);
 
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(PORT);
 
     char ip[INET6_ADDRSTRLEN] = {};
 
-    int addr = 1
+    int addr = 1;
     do {
         if (addr <= 0)
             cout << "Invalid address. ";
 
-        cout << "Please enter server address (default: " << DEFAULT_IP << ")." << endl << "For default enter /default: ";
+        cout << "Please enter server address (default: " << LOCALHOST << ")." << endl << "For default enter /default: ";
 
         if (fgets(ip, MESSAGE_SIZE - 1, stdin) != NULL)
             strTrim(ip, '\0');
 
         if (!strcmp(ip, "/default"))
-            addr = inet_pton(AF_INET, DEFAULT_IP, &serverAddr.sinAddr);
+            addr = inet_pton(AF_INET, LOCALHOST, &serverAddr.sin_addr);
         else
-            addr = inet_pton(AF_INET, IP, &serverAddr.sinAddr);
+            addr = inet_pton(AF_INET, ip, &serverAddr.sin_addr);
 
     } while(addr <= 0);
 
@@ -169,7 +169,7 @@ int main() {
         if (fgets(buffer, 12, stdin) != NULL)
             strTrim(buffer, '\0');
 
-        if (!strcmp(buffer. "/connect"))
+        if (!strcmp(buffer, "/connect"))
             connected = true;
         else if (!strcmp(buffer, "/quit")) {
             cout << "Quitting" << endl;
@@ -183,24 +183,24 @@ int main() {
     if (connect(sock, (struct sockaddr *)&serverAddr, serverAddrLen) < 0)
         errorMessage("\nConnection failed\n");
 
-    getsockname(sock, (struct sockaddr *)&clientAddr, clientAddrLen)
+    getsockname(sock, (struct sockaddr *)&clientAddr, (socklen_t *)&clientAddrLen);
 
     clientAddr.sin_port = htons(PORT);
-    cout << "Connect to Server: " << inet_ntoa(server_addr.sin_addr) << ": " << ntohs(server_addr.sin_port) << endl;
-    cout << "You are: " << inet_ntoa(client_addr.sin_addr) << ": " << ntohs(client_addr.sin_port) << endl;
+    cout << "Connect to Server: " << inet_ntoa(serverAddr.sin_addr) << ": " << ntohs(serverAddr.sin_port) << endl;
+    cout << "You are: " << inet_ntoa(clientAddr.sin_addr) << ": " << ntohs(clientAddr.sin_port) << endl;
 
     send(sock, nickname, NICKNAME_SIZE, 0);
 
-    pthread_t receiveMessageHandler;
-    if (pthread_create(&receiveMessageHandler, NULL, receiveMessageHandler, &sock) != 0)
+    pthread_t receiveMessageThread;
+    if (pthread_create(&receiveMessageThread, NULL, receiveMessageHandler, &sock) != 0)
         errorMessage("\nCreate pthread error\n");
     
-    pthread_t sendMessageHandler;
-    if (pthread_create(&sendMessageHandler, NULL, sendMessageHandler, &sock) != 0)
+    pthread_t sendMessageThread;
+    if (pthread_create(&sendMessageThread, NULL, sendMessageHandler, &sock) != 0)
         errorMessage("\nCreate pthread error\n");
 
-    pthread_join(receiveMessageHandler, NULL);
-    pthread_join(sendMessageHandler, NULL);
+    pthread_join(receiveMessageThread, NULL);
+    pthread_join(sendMessageThread, NULL);
 
     return 0;
 }
