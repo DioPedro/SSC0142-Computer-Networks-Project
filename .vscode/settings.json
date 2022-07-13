@@ -3,6 +3,7 @@
         "types.h": "c",
         "in.h": "c",
         "socket.h": "c",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "cctype": "cpp"
     }
 }
