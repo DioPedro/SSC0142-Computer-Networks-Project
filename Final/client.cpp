@@ -97,7 +97,7 @@ void *sendMessageHandler(void *sock) {
 
             if (buffer[0] != '/')
                 strTrim(buffer, '\n');
-            if (send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT));
+            if (send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT) < 0);
                 errorMessage("ERROR writing to sock");
         }
 
