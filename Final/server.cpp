@@ -274,8 +274,8 @@ void sendAllClients(ChannelList *channel, ClientList *clients, ClientList *clien
             sendInfo->message = (char *) malloc(sizeof(char) * (MESSAGE_SIZE + NICKNAME_SIZE + CHANNEL_NAME_SIZE + 5));
             strcpy(sendInfo->message, message);
 
-            if (pthread_create(&sendThread, NULL, sendMessage, (void *)sendInfo))
-                errorMessage("Createe thread error");
+            if (pthread_create(&sendThread, NULL, sendMessage, (void *)sendInfo) != 0)
+                errorMessage("Create thread error");
             pthread_detach(sendThread);
         }
         tmp = tmp->next;
@@ -299,7 +299,7 @@ void joinChannel(char *channelName, ChannelList *channel, ClientList *client) {
     char message[MESSAGE_SIZE];
     if (createNewChannel) {
         if (client->mainNode->numberOfChannels == MAX_CHANNELS) {
-            sprintf(message, "Could not create %s. Limit of channels reached\n", channel);
+            sprintf(message, "Could not create %s. Limit of channels reached\n", channelName);
             send(channel, client->mainNode, message);
             return;
         }
@@ -329,7 +329,7 @@ void joinChannel(char *channelName, ChannelList *channel, ClientList *client) {
         }
         client->mainNode->numberOfChannels++;
 
-        sprintf(message, "/channel %s Created and switched to channel", channel);
+        sprintf(message, "/channel %s Created and switched to channel", channelName);
         send(channel, client->mainNode, message);
     } else {
         bool isInChannel = false;
@@ -400,7 +400,8 @@ bool whoIs(ClientList *admin, char *username) {
     while (tmp != NULL) {
         if (!strcmp(tmp->name, username)) {
             sprintf(buffer, "%s - User(%s): %s\n", admin->mainNode->activeChannel->name, username, tmp->ip);
-            if (send(admin->socket, buffer, MESSAGE_SIZE, 0) < 0)
+            int snd = send(admin->socket, buffer, MESSAGE_SIZE, 0);
+            if (snd < 0)
                 return false;
             return true;
         }
@@ -409,7 +410,8 @@ bool whoIs(ClientList *admin, char *username) {
     }
 
     sprintf(buffer, "User '%s' is not on this channel\n", username);
-    if (send(admin->socket, buffer, MESSAGE_SIZE, 0) < 0)
+    int snd = send(admin->socket, buffer, MESSAGE_SIZE, 0);
+    if (snd < 0)
         return false;
     return true;
 }
@@ -520,7 +522,7 @@ void leaveChannel(ChannelList *channel, ClientList *client, char *channelName) {
                 }
             }
 
-            sprintf(message, "You left the channel %s.\n", tmpChannel->name, tmp->name);
+            sprintf(message, "You left the channel %s.\n", tmpChannel->name);
             send(channel, tmp->mainNode, message);
 
             tmp->mainNode->numberOfChannels--;

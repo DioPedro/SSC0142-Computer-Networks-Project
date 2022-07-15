@@ -24,7 +24,7 @@ void ctrlCHandler(int signal) {
 }
 
 void printNickname() {
-    printf("\r%s - %s", channel, nickname);
+    cout << "\r" << channel << " - " << nickname << endl;
     fflush(stdout);
 }
 
@@ -64,7 +64,8 @@ void *receiveMessageHandler(void *sock) {
 
             bzero(buffer, MESSAGE_SIZE + NICKNAME_SIZE + CHANNEL_NAME_SIZE + 5);
             strcpy(buffer, "/ack");
-            if (send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT) < 0)
+            int snd = send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT);
+            if (snd < 0)
                 errorMessage("ERROR writing to sock");
         } else {
             strTrim(buffer, '\0');
@@ -75,7 +76,8 @@ void *receiveMessageHandler(void *sock) {
 
             bzero(buffer, MESSAGE_SIZE + NICKNAME_SIZE + CHANNEL_NAME_SIZE + 5);
             strcpy(buffer, "/ack");
-            if (send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT) < 0)
+            int snd = send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT);
+            if (snd < 0)
                 errorMessage("ERROR writing to sock");
         }
     }
@@ -97,7 +99,8 @@ void *sendMessageHandler(void *sock) {
 
             if (buffer[0] != '/')
                 strTrim(buffer, '\n');
-            if (send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT) < 0);
+            int snd = send(*(int *)sock, buffer, strlen(buffer), MSG_DONTWAIT);
+            if (snd < 0)
                 errorMessage("ERROR writing to sock");
         }
 
