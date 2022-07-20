@@ -13,7 +13,7 @@ ChannelList *createChannelNode(char *name, ClientList *root);
 void disconnectClient(ClientList *client, ChannelList *channel);
 void deleteChannel(ChannelList *channel);
 void *closeServer(void *server);
-void send(ChannelList *channel, ClientList *client, char message[]);
+void serverMessage(ChannelList *channel, ClientList *client, char message[]);
 void *sendMessage(void *info);
 void sendAllClients(ChannelList *channel, ClientList *clients, ClientList *client, char message[]);
 void joinChannel(char *channelName, ChannelList *channel, ClientList *client);
