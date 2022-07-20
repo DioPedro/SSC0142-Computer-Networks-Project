@@ -166,7 +166,7 @@ int main() {
 
     } while(addr <= 0);
 
-    cout << "Connect: /connect" << endl << "Quit: /quit" << endl << "Ping: /ping" << endl;
+    cout << "Connect: /connect" << endl << "Quit: /quit" << endl;
     bool connected = false;
     while (!connected) {
         if (fgets(buffer, 12, stdin) != NULL)
@@ -177,9 +177,7 @@ int main() {
         else if (!strcmp(buffer, "/quit")) {
             cout << "Quitting" << endl;
             quit(sock);
-        } else if (!strcmp(buffer, "/ping"))
-            cout << "/ping can only be used after connecting to server" << endl;
-        else
+        } else
             cout << "Unkown command" << endl;
     }
 
