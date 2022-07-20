@@ -42,6 +42,7 @@ struct sChannelList {
     ClientList *clients;
 };
 
+/* Creates a new client node */
 ClientList *createClient(int sockFd, char *ip) {
     ClientList *newNode = (ClientList *) malloc(sizeof(ClientList));
     newNode->socket = sockFd;
@@ -104,7 +105,7 @@ void disconnectClient(ClientList *client, ChannelList *channel) {
                                 clientTmp->prev->next = clientTmp->next;
                                 if (clientTmp->next != NULL)
                                     clientTmp->next->prev = clientTmp->prev;
-                                // if there's no more clients if the channel it can be deleted
+                                // if there's no more clients in the channel it can be deleted
                                 else if (clientTmp->prev->prev == NULL)
                                     canCloseChannel = true;
 
@@ -371,6 +372,7 @@ void joinChannel(char *channelName, ChannelList *channel, ClientList *client) {
             }
         }
 
+        // The channel exists but the client isn't in the channel, append the client to the channel
         if (!isInChannel) {
             if (client->mainNode->numberOfChannels == MAX_CHANNELS) {
                 sprintf(message, "Could not join %s. Limit of channels reached.\n", channelName);
