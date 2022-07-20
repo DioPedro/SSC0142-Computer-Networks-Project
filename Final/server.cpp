@@ -517,6 +517,7 @@ void leaveChannel(ChannelList *channel, ClientList *client, char *channelName) {
 
             for (int i = 0; i < MAX_CHANNELS; ++i) {
                 if (!strcmp(tmp->mainNode->channels[i], tmpChannel->name)) {
+                    tmpChannel->clients->next->isAdmin = true;
                     tmp->mainNode->channels[i][0] = '\0';
                     break;
                 }
