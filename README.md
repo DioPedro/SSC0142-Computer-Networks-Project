@@ -7,6 +7,8 @@
 
 The code has been tested and confirmed to work with Ubuntu 20.04, in a Linux native system or in a Windows Subsystem for Linux (WSL).
 
+Video showing the code and the program in operation: https://youtu.be/OAVp6GGQQlU
+
 To compile the code we used gcc version 9.3.0 with includes the g++ compiler. We also used the make version 4.2.1.
 
 Use the commands to compile the code:
