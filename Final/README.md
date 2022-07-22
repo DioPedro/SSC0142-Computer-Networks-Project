@@ -49,36 +49,39 @@ As a last command the client will need to decide to `/connect` or to `/quit` the
 
 After logged in into the server the client will have some options of things that can be done. To show those options use `/help`
 ```
-/join #<channel>
-/leave #<channel>
-/quit
-/ping
+/j #<channel>
+/l #<channel>
+/q
+/p
 
 Admin Commands:
-/mute <nickname>
-/unmute <nickname>
-/kick <nickname>
-/whois <nickname>
+/m <nickname>
+/um <nickname>
+/k <nickname>
+/w <nickname>
 ```
 
 All commands of the client and server:
 ```
 Server:
-/quit
+/q
 
 Client:
-/join #<channel>
-/leave #<channel>
-/quit
-/ping
+/j #<channel>
+/l #<channel>
+/q
+/p
 
 Admin Commands:
-/mute <nickname>
-/unmute <nickname>
-/kick <nickname>
-/whois <nickname>
+/m <nickname>
+/um <nickname>
+/k <nickname>
+/w <nickname>
 ```
 
 Ctrl+C doesn't work for closing the program, if the client tries to quit by using it a message will be printed saying how to logout.
+<<<<<<< HEAD
 
 The video explaining the code and showing the application can be seen [here](https://youtu.be/OAVp6GGQQlU)
+=======
+>>>>>>> da6b557ee5063d02f337f4d1fb6e1206999b6843
