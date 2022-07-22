@@ -80,3 +80,5 @@ Admin Commands:
 ```
 
 Ctrl+C doesn't work for closing the program, if the client tries to quit by using it a message will be printed saying how to logout.
+
+The video explaining the code and showing the application can be seen [here](https://youtu.be/OAVp6GGQQlU)
